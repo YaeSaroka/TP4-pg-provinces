@@ -16,6 +16,13 @@ import CategoryRepository from './src/repositories/category-repository.js';
 import CategoryService from './src/services/category-service.js';
 import router_ from './src/controllers/category-controller.js';
 
+//LOCATIONS
+import LocationRouter from './src/controllers/location-controller.js';
+import Location from './src/entities/location.js';
+import LocationRepository  from "./src/repositories/location-repository.js";
+import LocationService from "./src/services/location-service.js";
+import _router from './src/controllers/location-controller.js';
+
 
 const app = express();
 const port = 3000; // El puerto 3000 (http://localhost:3000)
@@ -26,12 +33,13 @@ app.use(express.json()); // Middleware para parsear y comprender JSON.
 
 app.use("/api/province", ProvinceRouter);
 app.use("/api/event-category", CategoryRouter);
+app.use("/api/location", LocationRouter);
 // Inicio el Server y lo pongo a escuchar.
 
 
 app.get('/api/province', ProvinceRouter);
 app.get('/api/event-category', CategoryRouter);
-
+app.get('/api/location', LocationRouter);
 
 
 app.listen(port, () => {

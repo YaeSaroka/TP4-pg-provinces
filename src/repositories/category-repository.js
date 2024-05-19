@@ -25,7 +25,9 @@ export default class CategoryRepository {
         const client = new Client(config);
         try {
             await client.connect();
-            const sql = `SELECT * FROM event_categories WHERE id = ` + id;
+            const sql = `
+            SELECT * FROM event_categories 
+            WHERE id = ` + id;
             const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
@@ -43,7 +45,9 @@ export default class CategoryRepository {
         const client = new Client(config);
         try {
             await client.connect();
-            const sql = `INSERT INTO event_categories (name, display_order) VALUES ('${name}', '${display_order}')`;
+            const sql = `
+            INSERT INTO event_categories (name, display_order) 
+            VALUES ('${name}', '${display_order}')`;
             const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
