@@ -23,6 +23,19 @@ import LocationRepository  from "./src/repositories/location-repository.js";
 import LocationService from "./src/services/location-service.js";
 import _router from './src/controllers/location-controller.js';
 
+//USERS LIST
+import UserRouter from './src/controllers/user-controller.js';
+import User from './src/entities/user.js';
+import UserRepository from "./src/repositories/user-repository.js";
+import UserService from "./src/services/user-service.js";
+import routers from './src/controllers/user-controller.js';
+
+//EVENTS COMUNES
+import EventRouter from './src/controllers/event-controller.js';
+import Event from './src/entities/events.js';
+import EventRepository from "./src/repositories/event-repository.js";
+import EventService from "./src/services/event-service.js";
+import router_event from './src/controllers/event-controller.js';
 
 const app = express();
 const port = 3000; // El puerto 3000 (http://localhost:3000)
@@ -34,12 +47,15 @@ app.use(express.json()); // Middleware para parsear y comprender JSON.
 app.use("/api/province", ProvinceRouter);
 app.use("/api/event-category", CategoryRouter);
 app.use("/api/location", LocationRouter);
+app.use("/api/user", UserRouter);
+app.use("/api/event", EventRouter);
 // Inicio el Server y lo pongo a escuchar.
 
 
 app.get('/api/province', ProvinceRouter);
 app.get('/api/event-category', CategoryRouter);
 app.get('/api/location', LocationRouter);
+app.use("/api/event", EventRouter);
 
 
 app.listen(port, () => {

@@ -60,6 +60,12 @@ class ValidacionesHelper {
         return value;
     };
     
+    getVerificacionMail = (value, defaultValue) =>{
+        const patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value || !patron.test(value)) return defaultValue; //ACÁ SE FIJA SI EL VALUE ES NULL, UNDEFINED, ECT.
+        //el método .test se usa para verificar si el texto (username en este caso) coincide con el patron de mail (es un bool. devuelve true si coincide y sino un false)
+        return value
+    }
     
     
 }

@@ -27,17 +27,21 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('', async (req, res) => {
-    let respuesta, verif;
     const categoria_nueva = req.body
-    verif = validacionesHelper.getverifTDO(categoria_nueva.name, "hola");
+    let verif = validacionesHelper.getverifTDO(categoria_nueva.name, "hola");
     verif = await svc.createCategoryAsync(categoria_nueva);
-    if (verif != null && verif) {
-        respuesta = res.status(200).send(`Created.`);
+    if (verif === "hola")  
+    {
+        return res.status(400).send('Bad request: el nombre está vacío o contiene menos de 3 caracteres');
     }
-    else
-        respuesta = res.status(400).send(`Error interno.`)
-
-    return respuesta;
+    try {
+        const result = await svc.createCategoryAsync(categoria_nueva);
+        if (result > 0) {
+            return res.status(200).send('Created. OK');
+        } 
+    } catch (error) {
+        return res.status(500).send('Error interno');
+    }
 })
 
 router.put('', async (req, res) => {
