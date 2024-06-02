@@ -36,4 +36,46 @@ export default class EventLocationRepository {
     }
 
 
+    createEventLocationAsync = async (event_location_nueva) => {
+        console.log(event_location_nueva);
+        let returnArray = null;
+        const { id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user } = event_location_nueva;
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+            INSERT INTO event_locations (id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *`;
+            const result = await client.query(sql, [id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user]);
+            console.log(result);
+            await client.end();
+            returnArray = result.rows;
+        } catch (error) {
+            console.error('Error', error);
+        }
+        return returnArray;
+    }
+    updateEventLocationAsync = async (event_location_Actualizada) => {
+        const { id, id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user } = event_location_Actualizada;
+        const client = new Client(config);
+        
+        try {
+          await client.connect();
+          const sql = `
+            UPDATE event_locations 
+            SET id_location = $1, name = $2, full_address = $3, max_capacity = $4, latitude = $5, longitude = $6, id_creator_user = $7   
+            WHERE id = $8`;
+            
+          const result = await client.query(sql, [id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user, id]);
+          await client.end();
+          
+          return result.rowCount;
+        } catch(error) {
+          console.error('Error', error);
+          throw error;
+        }
+      }
+      
+
 }

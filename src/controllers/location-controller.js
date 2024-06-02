@@ -33,7 +33,6 @@ router.get('/:id/event-location', async (req, res) => {
     let token = req.headers.authorization.substring(7);
     //DESENCRIPTAMOS
     let payloadoriginal = await JwtHelper.desencriptarToken(token);
-  
     if (payloadoriginal != null) 
     {
       req.user = payloadoriginal;
