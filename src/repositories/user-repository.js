@@ -24,7 +24,6 @@ export default class UserRepository {
 
     async registerUserAsync(newUser) {
         const client = new Client(config);
-        let returnArray = null;
         const { first_name, last_name, username, password } = newUser;
         try {
             await client.connect();

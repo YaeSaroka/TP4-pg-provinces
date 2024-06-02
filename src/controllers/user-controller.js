@@ -5,15 +5,16 @@ import validacionesHelper from "../helpers/validaciones-helper.js";
 const router = Router();
 const svc = new UserService();
 
+let token;
 router.post('/login', async (req, res) => {
     try{
         const nuevo_user = req.body;
         const result = await svc.loginUserAsync(nuevo_user);
+        token=result.token;
         res.status(200).json({ success: true, token: result.token });
     } catch (error) {
         res.status(401).json({ success: false, message: 'Invalid username or password' });
-    }
-    
+    }  
 })
 
 router.post('/register', async (req, res) => {

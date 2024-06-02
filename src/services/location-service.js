@@ -13,4 +13,10 @@ export default class LocationService{
         const returnArray = await repo.getLocationByIdAsync(id);
         return returnArray;
     }
+    getLocationByIdAsync = async (id) =>{
+        const repo = new LocationRepository();
+        const returnArray = await repo.getLocationByIdAsync(id);
+        return returnArray;
+    
+        }
 }

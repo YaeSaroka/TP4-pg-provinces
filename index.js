@@ -37,6 +37,14 @@ import EventRepository from "./src/repositories/event-repository.js";
 import EventService from "./src/services/event-service.js";
 import router_event from './src/controllers/event-controller.js';
 
+
+//EVENT-LOCATIONS
+import EventLocationRouter from './src/controllers/event-locations-controller.js';
+import EventLocation from './src/entities/event-locations.js';
+import EventLocationRepository from "./src/repositories/event-locations-repository.js";
+import EventLocationService from './src/services/event-locations-service.js';
+import router_eventlocation from './src/controllers/event-locations-controller.js';
+
 const app = express();
 const port = 3000; // El puerto 3000 (http://localhost:3000)
 // Agrego los Middlewares
@@ -49,6 +57,7 @@ app.use("/api/event-category", CategoryRouter);
 app.use("/api/location", LocationRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/event", EventRouter);
+app.use("/api/event-location", EventLocationRouter);
 // Inicio el Server y lo pongo a escuchar.
 
 
@@ -56,6 +65,7 @@ app.get('/api/province', ProvinceRouter);
 app.get('/api/event-category', CategoryRouter);
 app.get('/api/location', LocationRouter);
 app.use("/api/event", EventRouter);
+app.use("/api/event-location", EventLocationRouter);
 
 
 app.listen(port, () => {

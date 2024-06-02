@@ -1,4 +1,7 @@
+
+import jwt from "jsonwebtoken";
 class ValidacionesHelper {
+   
     /**
     * Este método recibe un 'value', e intenta convertirlo a un número entero,
     * si por alguna razón falla retorna el 'defaultValue', sino el valor
@@ -66,6 +69,8 @@ class ValidacionesHelper {
         //el método .test se usa para verificar si el texto (username en este caso) coincide con el patron de mail (es un bool. devuelve true si coincide y sino un false)
         return value
     }
+
+    
     
     
 }
