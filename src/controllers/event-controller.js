@@ -19,48 +19,7 @@ router.get('', async (req, res) => {
   }
   return respuesta;
 });
-/*
-router.get('name/:name', async (req, res) => {
-  let respuesta;
-  const name = req.params.name;
-  const returnArray = await svc.getEventByNameAsync(name);
-  if (returnArray != null) {
-    respuesta = res.status(200).json(returnArray);
-  }
-  else respuesta = res.status(500).send(`Error interno.`)
-  return respuesta;
-})
 
-router.get('/category/:category', async (req, res) => {
-  let respuesta;
-  const category = req.params.category;
-  const returnArray = await svc.getEventByCategoryAsync(category);
-  if (returnArray != null) {
-    respuesta = res.status(200).json(returnArray);
-  }
-  else respuesta = res.status(500).send(`Error interno.`)
-  return respuesta;
-})
-router.get('/startdate/:startdate', async (req, res) => {
-  let respuesta;
-  const startdate = req.params.startdate;
-  const returnArray = await svc.getEventByStarDateyAsync(startdate);
-  if (returnArray != null) {
-    respuesta = res.status(200).json(returnArray);
-  }
-  else respuesta = res.status(500).send(`Error interno.`)
-  return respuesta;
-})
-router.get('/tag/:tag', async (req, res) => {
-  let respuesta;
-  const tag = req.params.tag;
-  const returnArray = await svc.getEventByTagAsync(tag);
-  if (returnArray != null) {
-    respuesta = res.status(200).json(returnArray);
-  }
-  else respuesta = res.status(500).send(`Error interno.`)
-  return respuesta;
-})
 
 
 /*CRUD***************************************************************************/
