@@ -67,7 +67,15 @@ class ValidacionesHelper {
         const patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value || !patron.test(value)) return defaultValue; //ACÁ SE FIJA SI EL VALUE ES NULL, UNDEFINED, ECT.
         //el método .test se usa para verificar si el texto (username en este caso) coincide con el patron de mail (es un bool. devuelve true si coincide y sino un false)
-        return value
+        return value;
+    }
+    getmax_capacity = (value, defaultValue, max_capacity) =>{
+        if(value>max_capacity) return defaultValue;
+        return true;
+    }
+    getprice_duration=(value,defaultValue,price)=>{
+        if(value < 0 || price < 0) return defaultValue;
+        return true;
     }
 
     

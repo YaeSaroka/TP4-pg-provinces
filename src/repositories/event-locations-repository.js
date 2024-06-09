@@ -77,5 +77,22 @@ export default class EventLocationRepository {
         }
       }
       
+      deleteEventLocationAsync = async (id) =>{
+        let returnArray= 0;
+        const client = new Client(config);
+        try{
+            await client.connect();
+            const sql =`
+            DELETE FROM event_locations
+            WHERE id = '${id}'`;
+            const result = await client.query(sql);
+            await client.end();
+            returnArray = result.rowCount[0];
+            console.log(returnArray);
+        } catch(error){
+            console.error('Error', error);
+        }
+        return returnArray;
+    }
 
 }

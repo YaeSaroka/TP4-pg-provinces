@@ -2,6 +2,7 @@ import { Router } from "express";
 import EventLocationService from "./../services/event-locations-service.js";
 import validacionesHelper from "../helpers/validaciones-helper.js";
 import JwtHelper from "../helpers/jwt-helper.js";
+import jwtHelper from "../helpers/jwt-helper.js";
 
 const router = Router();
 const svc = new EventLocationService();
@@ -118,6 +119,28 @@ router.put('', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  let token = req.headers.authorization.substring(7);
+  let payloadoriginal = await jwtHelper.desencriptarToken(token);
+  if (payloadoriginal == false) {
+    return res.status(401).send('Unauthorized. El usuario no se encuentra autenticado.');
+  }
+  try{ 
+    const returnArray = await svc.deleteEventLocationAsync(id);
+    if(returnArray>0){
+        return res.status(200).send('Ok.' + {payloadoriginal});
+    }
+    else{
+        return respuesta = res.status(404).send(`Not Found.`)
+    }
+}
+catch (error)
+{
+    return res.status(500).send('Error Interno.');
+}
+})
 
 
 

@@ -25,5 +25,10 @@ export default class EventLocationService{
         const returnArray = await repo.updateEventLocationAsync(event_location_Actualizada);
         return returnArray;
     }
+    deleteEventLocationAsync = async(id) =>{
+        const repo = new EventLocationRepository();
+        const returnArray = await repo.deleteEventLocationAsync(id);
+        return returnArray;
+    }
     
 }
