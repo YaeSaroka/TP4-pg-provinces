@@ -1,6 +1,7 @@
 import { Router } from "express";
 import EventService from "./../services/event-service.js";
 import validacionesHelper from "../helpers/validaciones-helper.js";
+import JwtHelper from "../helpers/jwt-helper.js";
 
 
 const router = Router();
@@ -20,43 +21,28 @@ router.get('', async (req, res) => {
   return respuesta;
 });
 
-
-
 /*CRUD***************************************************************************/
 
-
 router.post('', async (req, res) => {
-  const event_nuevo = req.body;
-  const max_assitance = event_nuevo.max_assitance;
-  const price = event_nuevo.price;
-  const duration = event_nuevo.duration_in_minutes;
-  //TOKEN
   let token = req.headers.authorization.substring(7);
   let payloadoriginal = await JwtHelper.desencriptarToken(token);
-  //-----------------------------------------------------------------------
   if (!payloadoriginal) //payloadoriginal != null
   {
     return res.status(401).send('Unauthorized. Usuario no autenticado');
   }
   req.user = payloadoriginal;
-
-  const verif_name = validacionesHelper.getverifTDO(event_location_nueva.name, "hola");
-
-  const returnArray = await svc.selectmax_capacity(event_nuevo.id_event_location);
-  if (returnArray != null) {
-    let max_capacity = res.status(200).json(returnArray);
-  }
-  else max_capacity = res.status(500).send(`Error interno.`)
-
-
-  max_capacity = validacionesHelper.getmax_capacity(max_assitance, -1, max_capacity);
-  const duration_verif = await svc.getprice_duration(duration, -1, price);
-
-  if (verif_name === "hola") {
+  
+  const event_nuevo = req.body;
+  const verif_name = validacionesHelper.getverifTDO(event_nuevo.name, "hola");
+  const verif_descripcion = validacionesHelper.getverifTDO(event_nuevo.description, "hola")
+  const verif_max_assistance = await validacionesHelper.getmax_capacity(event_nuevo.id_event_location, event_nuevo.max_assistance, "hola" );
+  const verif_priceAndDuration = validacionesHelper.getprice_duration(event_nuevo.duration_in_minutes, -1, event_nuevo.price);
+ 
+  if (verif_name === "hola" || verif_descripcion === "hola") {
     return res.status(400).send('Bad request: el nombre está vacío o contiene menos de 3 caracteres');
-  } else if (max_capacity === -1)
-    return res.status(400).send('Bad request: no espacio disponible');
-  else if (duration_verif === -1)
+  } else if (verif_max_assistance==="hola")
+    return res.status(400).send('Bad request: no hay espacio disponible');
+  else if (!verif_priceAndDuration)
     return res.status(400).send('Bad request: el precio o la duración es menor que cero');
 
   try {
@@ -71,7 +57,4 @@ router.post('', async (req, res) => {
     return res.status(500).send('Error interno');
   }
 })
-
-
-
 export default router;

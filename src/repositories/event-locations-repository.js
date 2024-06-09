@@ -94,5 +94,20 @@ export default class EventLocationRepository {
         }
         return returnArray;
     }
+    getMaxCapacity = async(id_event_location) =>{
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                SELECT max_capacity
+                FROM event_locations
+                WHERE id= $1`;
+            const returnArray = await client.query(sql, [id_event_location]);
+            await client.end();
+            return returnArray.rows[0].max_capacity;
+        } catch (error) {
+          console.error('Error', error);
+        }
+      }
 
 }

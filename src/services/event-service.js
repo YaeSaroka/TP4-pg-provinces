@@ -9,12 +9,12 @@ export default class EventService {
     }
     
 
-    /*CRUD*******************************************************************
+    /*CRUD********************************************************************/
 
     createEventAsync = async (evento_nuevo) => {
         const repo = new EventRepository();
         const returnArray = await repo.createEventAsync(evento_nuevo);
         return returnArray;
     }
-*/
+
 }

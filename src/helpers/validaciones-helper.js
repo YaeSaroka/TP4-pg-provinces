@@ -1,4 +1,4 @@
-
+import EventLocationRepository from '../repositories/event-locations-repository.js';
 import jwt from "jsonwebtoken";
 class ValidacionesHelper {
    
@@ -69,18 +69,30 @@ class ValidacionesHelper {
         //el método .test se usa para verificar si el texto (username en este caso) coincide con el patron de mail (es un bool. devuelve true si coincide y sino un false)
         return value;
     }
-    getmax_capacity = (value, defaultValue, max_capacity) =>{
-        if(value>max_capacity) return defaultValue;
-        return true;
-    }
+    
     getprice_duration=(value,defaultValue,price)=>{
         if(value < 0 || price < 0) return defaultValue;
         return true;
     }
-
-    
+    getmax_capacity = async (id_event_location, max_assistance,defaultValue) => {
+        const repo = new EventLocationRepository(); // Suponiendo que tengas un repositorio para la tabla event_locations
+        try {
+            // Obtener el max_capacity de la ubicación del evento
+            const max_capacity = await repo.getMaxCapacity(id_event_location);
+            console.log('id_location: ',id_event_location);
+            console.log(max_capacity);
+            console.log(max_assistance);
+            // Validar que max_assistance sea menor o igual que max_capacity
+            if (max_assistance > max_capacity) {
+                return defaultValue;
+            }else
+            return max_assistance;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    };
     
     
 }
-    // Exporto todo lo que yo quiero exponer del módulo:
     export default new ValidacionesHelper();

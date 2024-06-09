@@ -53,23 +53,20 @@ export default class EventRepository {
     }
     return returnArray;
   }
-};
 
-
-/*CRUD***************************************
+/*CRUD***************************************/
 createEventAsync = async (evento_nuevo) => {
 console.log(evento_nuevo);
 let returnArray = null;
-const { name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assitance, id_creator_user } = evento_nuevo;
+const { name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user } = evento_nuevo;
 const client = new Client(config);
 try {
   await client.connect();
   const sql = `
-      INSERT INTO event_locations (name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assitance, id_creator_user) 
+      INSERT INTO events (name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *`;
-  const result = await client.query(sql, [name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assitance, id_creator_user]);
-  console.log(result);
+  const result = await client.query(sql, [name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user]);
   await client.end();
   returnArray = result.rows;
 } catch (error) {
@@ -77,7 +74,9 @@ try {
 }
 return returnArray;
 }
-*/
+};
+
+
 
 
 
