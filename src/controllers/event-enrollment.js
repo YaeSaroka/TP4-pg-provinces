@@ -5,7 +5,7 @@ import JwtHelper from "../helpers/jwt-helper.js";
 
 const router = Router();
 const svc = new EventEnrollmentService();
-router.get("", async (req, res) => {
+router.get('', async (req, res) => {
   let respuesta;
   const { id, first_name, last_name, username, attended, rating } = req.query;
   console.log(id);
@@ -98,10 +98,46 @@ router.post('/event/:id_user/enrollment', async(req, res)=> {
     else 
       return res.status(500).send('Error interno: la inserción no tuvo efecto');
     
-
 }catch (error) {
     console.error('Error interno:', error);
     return res.status(500).send('Error interno');
   }
-})
+});
+
+
+router.delete("/event/:id_event/enrollment", async (req, res) => {
+  try {
+    let token = req.headers.authorization.substring(7);
+    let payloadoriginal = await JwtHelper.desencriptarToken(token);
+    
+    if (!payloadoriginal) 
+      return res.status(500).send('Unauthorized. Usuario no autenticado');
+  
+      req.user = payloadoriginal;
+      const id_event= req.params.id_event;
+      const id_user = payloadoriginal.id;
+      console.log("USER",id_user);
+      console.log("event", id_event);
+
+      const ya_registrado = await validacionesHelper.isAlreadyRegisterInEvent(id_event, "hola", id_user);
+      const verif_fecha = await validacionesHelper.verificarFechaRatinEventEnrollment(id_event, "hola");
+      console.log("regitrado: ", ya_registrado);
+      
+      if(ya_registrado != "hola")
+        return res.status(400).send('Bad request: no se encuentra registrado en este evento');
+      if (verif_fecha === "hola")
+        return res.status(400).send('Bad request: el show ya finalizó o es hoy');
+  
+      const returnArray = await svc.deleteUserFromEventEnrollmentAsync(id_user, id_event);
+      console.log(returnArray.length);
+      if ( returnArray.length <= 0) 
+        return res.status(201).send('Deleted. OK');
+      else 
+        return res.status(500).send('Error interno: la inserción no tuvo efecto');
+
+  } catch (error) {
+    console.error("Error interno:", error);
+    return res.status(500).send("Error interno");
+  }
+});
 export default router;

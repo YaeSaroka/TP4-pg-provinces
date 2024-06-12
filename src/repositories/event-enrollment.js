@@ -136,5 +136,23 @@ export default class EventEnrollmentRepository {
     return returnArray;
     }
 
+    deleteUserFromEventEnrollmentAsync = async (id_user, id_event) => {
+      console.log(id_user);
+      let returnArray = null;
+      const client = new Client(config);
+      try {
+        await client.connect();
+        const sql = `
+        DELETE FROM event_enrollments
+        WHERE id_user = $1
+        AND id_event = $2`;
+        const result = await client.query(sql, [id_user, id_event]);
+        await client.end();
+        returnArray = result.rows;
+      } catch (error) {
+        console.error('Error', error);
+      }
+      return returnArray;
+      };
     
 }

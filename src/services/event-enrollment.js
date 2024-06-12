@@ -18,5 +18,10 @@ export default class EventEnrollementService{
         const returnArray = await repo.registerUserEventEnrollment(id_event, description, id_user);
         return returnArray;
     }
+    deleteUserFromEventEnrollmentAsync = async (id_user, id_event) => {
+        const repo = new EventEnrollmentRepository();
+        const returnArray = await repo.deleteUserFromEventEnrollmentAsync(id_user, id_event);
+        return returnArray;
+    }
 
 }
