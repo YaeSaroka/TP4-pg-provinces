@@ -6,23 +6,9 @@ import JwtHelper from "../helpers/jwt-helper.js";
 const router = Router();
 const svc = new EventService();
 
-router.get("", async (req, res) => {
-  let respuesta;
-  const { name, category, startdate, tag } = req.query;
-  const params = { name, category, startdate, tag };
-  console.log(params);
-  const returnArray = await svc.getEventAllAsync(params);
-  if (returnArray != null) {
-    respuesta = res.status(200).json(returnArray);
-  } else {
-    respuesta = res.status(500).send(`Error interno.`);
-  }
-  return respuesta;
-});
-
 /*CRUD***************************************************************************/
 
-router.post("", async (req, res) => {
+router.post('', async (req, res) => {
   let token = req.headers.authorization.substring(7);
   let payloadoriginal = await JwtHelper.desencriptarToken(token);
   if (!payloadoriginal) {
@@ -159,4 +145,43 @@ router.delete("/:id", async (req, res) => {
   }
   return respuesta;
 });
+
+router.get('/:id', async (req, res) => {
+  const id= req.params.id
+  let respuesta;
+  const returnArray = await svc.getDetalleEvento(id,60,0);
+  if (returnArray != null) {
+    respuesta = res.status(200).json(returnArray);
+  } else {
+    respuesta = res.status(500).send(`Error interno.`);
+  }
+  return respuesta;
+});
+
+
+/*REVISAR*/
+router.get('/', async (req, res) => {
+    const limit = 60;
+    const offset = 0;
+    let respuesta;
+
+    try {
+        const { events, total } = await svc.getAllEvents(limit, offset);
+        const pagination = {
+            limit,
+            offset,
+            nextPage: offset + limit < total ? offset + limit : null,
+            total
+        };
+        respuesta = res.status(200).json({
+            collection: events.length > 0 ? events : null,
+            pagination
+        });
+    } catch (error) {
+        console.error(error);
+        respuesta = res.status(500).send(`Error interno.`);
+    }
+    return respuesta;
+});
+
 export default router;
