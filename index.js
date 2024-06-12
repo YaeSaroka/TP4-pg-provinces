@@ -45,6 +45,13 @@ import EventLocationRepository from "./src/repositories/event-locations-reposito
 import EventLocationService from './src/services/event-locations-service.js';
 import router_eventlocation from './src/controllers/event-locations-controller.js';
 
+//EVENT-ENROLLMENTS
+import EventEnrollmentRouter from './src/controllers/event-enrollment.js';
+import EventEnrollment from "./src/entities/event-enrollment.js";
+import EventEnrollmentRepository from "./src/repositories/event-enrollment.js";
+import EventEnrollementService from "./src/services/event-enrollment.js";
+import router_event_Enrollment from './src/controllers/event-enrollment.js';
+
 const app = express();
 const port = 3000; // El puerto 3000 (http://localhost:3000)
 // Agrego los Middlewares
@@ -58,6 +65,8 @@ app.use("/api/location", LocationRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/event", EventRouter);
 app.use("/api/event-location", EventLocationRouter);
+app.use("/api/event-enrollment", EventEnrollmentRouter);
+app.use("/api", EventEnrollmentRouter);
 // Inicio el Server y lo pongo a escuchar.
 
 
@@ -66,7 +75,8 @@ app.get('/api/event-category', CategoryRouter);
 app.get('/api/location', LocationRouter);
 app.use("/api/event", EventRouter);
 app.use("/api/event-location", EventLocationRouter);
-
+app.use("/api/event-enrollment", EventEnrollmentRouter);
+app.use("/api", EventEnrollmentRouter);
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)

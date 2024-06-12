@@ -74,7 +74,70 @@ try {
 }
 return returnArray;
 }
+
+
+updateEventAsync = async (evento_actualizado) => {
+  console.log(evento_actualizado);
+  let returnArray = null;
+  const {name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user, id } = evento_actualizado;
+  const client = new Client(config);
+  try {
+    await client.connect();
+    const sql = `
+        UPDATE events
+        SET  name=$1, description=$2, id_event_category=$3, id_event_location=$4, start_date=$5, duration_in_minutes=$6, price=$7, enabled_for_enrollment=$8, max_assistance=$9, id_creator_user=$10
+        WHERE id=$11
+        RETURNING *`;
+    const result = await client.query(sql, [ name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user, id]);
+    await client.end();
+    returnArray = result.rows;
+  } catch (error) {
+    console.error('Error', error);
+  }
+  return returnArray;
+  };
+
+  deleteEventAsync = async (id) => {
+    console.log(id);
+    let returnArray = null;
+    const client = new Client(config);
+    try {
+      await client.connect();
+      const sql = `
+      DELETE FROM events
+      WHERE id = $1;`;
+      const result = await client.query(sql, [id]);
+      await client.end();
+      returnArray = result.rows;
+    } catch (error) {
+      console.error('Error', error);
+    }
+    return returnArray;
+    };
+
+    getEventById = async (id) => {
+      let returnArray = null;
+      const client = new Client(config);
+      try {
+          await client.connect();
+          const sql = `
+          SELECT start_date FROM events 
+          WHERE id = ` + id;
+          const result = await client.query(sql);
+          await client.end();
+          returnArray = result.rows;
+      } catch (error) {
+          console.log(error);
+      }
+      return returnArray;
+  }
+    
+  
+
+
 };
+
+
 
 
 

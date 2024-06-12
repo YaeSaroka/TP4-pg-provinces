@@ -123,7 +123,7 @@ router.delete('/:id', async (req, res) => {
   const id = req.params.id;
   console.log(id);
   let token = req.headers.authorization.substring(7);
-  let payloadoriginal = await jwtHelper.desencriptarToken(token);
+  let payloadoriginal = await JwtHelper.desencriptarToken(token);
   if (payloadoriginal == false) {
     return res.status(401).send('Unauthorized. El usuario no se encuentra autenticado.');
   }
