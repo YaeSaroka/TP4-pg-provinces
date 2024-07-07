@@ -31,13 +31,19 @@ export default class EventEnrollmentRepository {
       let sql = `SELECT * FROM event_enrollments
             LEFT JOIN users ON users.Id = event_enrollments.id_user
             LEFT JOIN events ON events.Id = event_enrollments.Id_event
-            WHERE 1=1 AND events.Id = '${params.id}'`;
+            WHERE 1=1 `;
 
       const values = [];
       let index = 1;
       console.log("Tipo de params:", typeof params);
       console.log("Params completo:", params);
-
+      if (params.id) {
+        console.log(params.id);
+        sql += ` AND events.Id = $${index}`;
+        console.log(index);
+        values.push(params.id);
+        index++;
+      }
       if (params.first_name) {
         console.log("holaa");
         console.log(params.first_name);

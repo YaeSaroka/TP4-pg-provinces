@@ -3,7 +3,7 @@ import pkg from "pg";
 const { Client } = pkg;
 
 export default class EventRepository {
-  getEventAllAsync = async (params) => { //Busqueda
+  BusquedaEventsAsync = async (params) => { //Busqueda
     let returnArray = null;
     const client = new Client(config);
     try {
@@ -190,7 +190,7 @@ export default class EventRepository {
       await client.end();
 
       const events = {};
-
+      console.log("hola");
       result.rows.forEach(row => {
         if (!events[row.event_id]) {
           events[row.event_id] = {
@@ -257,9 +257,7 @@ export default class EventRepository {
 
 
 
-/*REVISAR*/
-
-  getAllEvents = async (limit = 10, offset = 0) => {
+  getAllEvents = async (limit = 60, offset = 0) => {
     let returnArray = [];
     let total = 0;
     const client = new Client(config);
@@ -282,7 +280,6 @@ export default class EventRepository {
             l.name AS location_name,
             l.latitude AS location_latitude,
             l.longitude AS location_longitude,
-            l.max_capacity AS location_max_capacity,
             p.id AS province_id,
             p.name AS province_name,
             p.full_name AS province_full_name,
@@ -311,7 +308,7 @@ export default class EventRepository {
         LIMIT $1 OFFSET $2`;
         const result = await client.query(sql, [limit, offset]);
 
-        // Obtiene el total de eventos para la paginación
+       
         const countSql = `SELECT COUNT(*) FROM events`;
         const countResult = await client.query(countSql);
         total = parseInt(countResult.rows[0].count, 10);

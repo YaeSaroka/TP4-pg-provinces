@@ -2,7 +2,11 @@ import EventRepository from '../repositories/event-repository.js';
 
 export default class EventService {
     /*CRUD********************************************************************/
-
+    BusquedaEventsAsync = async (evento_nuevo) => {
+        const repo = new EventRepository();
+        const returnArray = await repo.BusquedaEventsAsync(evento_nuevo);
+        return returnArray;
+    }
     createEventAsync = async (evento_nuevo) => {
         const repo = new EventRepository();
         const returnArray = await repo.createEventAsync(evento_nuevo);

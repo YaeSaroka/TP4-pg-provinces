@@ -7,7 +7,19 @@ const router = Router();
 const svc = new EventService();
 
 /*CRUD***************************************************************************/
+router.get('', async (req, res) => {
+  let respuesta;
+  const { name, category, startdate, tag } = req.query;
+  console.log(name);
+  const params = { name, category, startdate, tag};
+  console.log(params);
+  const returnArray = await svc.BusquedaEventsAsync(params);
+  if (returnArray != null && returnArray.length > 0) {
+    respuesta = res.status(200).json(returnArray);
+  } else respuesta = res.status(500).send(`Error interno.`);
 
+  return respuesta;
+});
 router.post('', async (req, res) => {
   let token = req.headers.authorization.substring(7);
   let payloadoriginal = await JwtHelper.desencriptarToken(token);
@@ -19,34 +31,16 @@ router.post('', async (req, res) => {
 
   const event_nuevo = req.body;
   const verif_name = validacionesHelper.getverifTDO(event_nuevo.name, "hola");
-  const verif_descripcion = validacionesHelper.getverifTDO(
-    event_nuevo.description,
-    "hola"
-  );
-  const verif_max_assistance = await validacionesHelper.getmax_capacity(
-    event_nuevo.id_event_location,
-    event_nuevo.max_assistance,
-    "hola"
-  );
-  const verif_priceAndDuration = validacionesHelper.getprice_duration(
-    event_nuevo.duration_in_minutes,
-    -1,
-    event_nuevo.price
-  );
+  const verif_descripcion = validacionesHelper.getverifTDO(event_nuevo.description,"hola");
+  const verif_max_assistance = await validacionesHelper.getmax_capacity(event_nuevo.id_event_location,event_nuevo.max_assistance, "hola");
+  const verif_priceAndDuration = validacionesHelper.getprice_duration(event_nuevo.duration_in_minutes,-1,event_nuevo.price);
 
   if (verif_name === "hola" || verif_descripcion === "hola") {
-    return res
-      .status(400)
-      .send(
-        "Bad request: el nombre está vacío o contiene menos de 3 caracteres"
-      );
+    return res.status(400).send("Bad request: el nombre está vacío o contiene menos de 3 caracteres");
   } else if (verif_max_assistance === "hola")
     return res.status(400).send("Bad request: no hay espacio disponible");
   else if (!verif_priceAndDuration)
-    return res
-      .status(400)
-      .send("Bad request: el precio o la duración es menor que cero");
-
+    return res.status(400).send("Bad request: el precio o la duración es menor que cero");
   try {
     const result = await svc.createEventAsync(event_nuevo);
     if (result && result.length > 0) {
@@ -71,37 +65,17 @@ router.put("", async (req, res) => {
 
   const evento_actualizado = req.body;
 
-  const verif_name = validacionesHelper.getverifTDO(
-    evento_actualizado.name,
-    "hola"
-  );
-  const verif_descripcion = validacionesHelper.getverifTDO(
-    evento_actualizado.description,
-    "hola"
-  );
-  const verif_max_assistance = await validacionesHelper.getmax_capacity(
-    evento_actualizado.id_event_location,
-    evento_actualizado.max_assistance,
-    "hola"
-  );
-  const verif_priceAndDuration = validacionesHelper.getprice_duration(
-    evento_actualizado.duration_in_minutes,
-    -1,
-    evento_actualizado.price
-  );
+  const verif_name = validacionesHelper.getverifTDO(evento_actualizado.name,"hola");
+  const verif_descripcion = validacionesHelper.getverifTDO(evento_actualizado.description,"hola");
+  const verif_max_assistance = await validacionesHelper.getmax_capacity(evento_actualizado.id_event_location,evento_actualizado.max_assistance,"hola");
+  const verif_priceAndDuration = validacionesHelper.getprice_duration(evento_actualizado.duration_in_minutes,-1,evento_actualizado.price);
 
   if (verif_name === "hola" || verif_descripcion === "hola") {
-    return res
-      .status(400)
-      .send(
-        "Bad request: el nombre está vacío o contiene menos de 3 caracteres"
-      );
+    return res.status(400).send("Bad request: el nombre está vacío o contiene menos de 3 caracteres");
   } else if (verif_max_assistance === "hola")
     return res.status(400).send("Bad request: no hay espacio disponible");
   else if (!verif_priceAndDuration)
-    return res
-      .status(400)
-      .send("Bad request: el precio o la duración es menor que cero");
+    return res.status(400).send("Bad request: el precio o la duración es menor que cero");
 
   try {
     const result = await svc.updateEventAsync(evento_actualizado);
@@ -159,10 +133,10 @@ router.get('/:id', async (req, res) => {
 });
 
 
-/*REVISAR*/
-router.get('/', async (req, res) => {
-    const limit = 60;
-    const offset = 0;
+
+router.get('/:limit/:offset', async (req, res) => {
+    const limit = req.params.limit;
+    const offset = req.params.offset;
     let respuesta;
 
     try {

@@ -5,6 +5,7 @@ import JwtHelper from "../helpers/jwt-helper.js";
 
 const router = Router();
 const svc = new EventEnrollmentService();
+
 router.get('', async (req, res) => {
   let respuesta;
   const { id, first_name, last_name, username, attended, rating } = req.query;
