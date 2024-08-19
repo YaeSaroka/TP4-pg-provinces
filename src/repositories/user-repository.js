@@ -22,8 +22,9 @@ export default class UserRepository {
         return returnArray;
     }
 
-    async registerUserAsync(newUser) {
+     registerUserAsync = async (newUser) => {
         const client = new Client(config);
+        let returnArray = null;
         const { first_name, last_name, username, password } = newUser;
         try {
             await client.connect();
@@ -31,8 +32,10 @@ export default class UserRepository {
                 INSERT INTO users (first_name, last_name, username, password) 
                 VALUES ($1, $2, $3, $4) RETURNING *`;
             const result = await client.query(sql, [first_name, last_name, username, password]);
+            
             await client.end();
             returnArray= result.rows[0];
+            console.log(result.rows[0]);
         } catch (error) {
             console.log(error);
         }

@@ -11,9 +11,10 @@ router.post('/login', async (req, res) => {
         const nuevo_user = req.body;
         const result = await svc.loginUserAsync(nuevo_user);
         token=result.token;
-        res.status(200).json({ success: true, token: result.token });
+        return res.status(200).json({ success: true, token: result.token });
+        
     } catch (error) {
-        res.status(401).json({ success: false, message: 'Invalid username or password' });
+        return res.status(401).json({ success: false, message: 'Usuario o contraseña inválidos' });
     }  
 })
 
@@ -23,23 +24,24 @@ router.post('/register', async (req, res) => {
     let check_last_name = validacionesHelper.getverifTDO(nuevo_user.last_name, "hola");
     let check_username= validacionesHelper.getVerificacionMail(nuevo_user.username, "mail");
     let check_password= validacionesHelper.getverifTDO(nuevo_user.password, "hola");
-    if (verif === "hola" || check_last_name === "hola" || check_password==="hola" )  //SI ES HOLA ALGO ESTÁ MAL EN LAS VALIDACIONES! ASI QUE YA LO COMUNICO 
-    {
-        return res.status(400).send('Bad request: el nombre / apellido / contraseña está vacío o contiene menos de 3 caracteres');
+
+    if (verif === "hola" || check_last_name === "hola" || check_password==="hola" ) {
+        return res.status(400).json({ success: false, message: 'Bad request: el nombre / apellido / contraseña está vacío o contiene menos de 3 caracteres' });
     }
-    if (check_username === "mail")
-    {
-        return res.status(400).send('Bad request: el email para el campo username es inválido.');
+    if (check_username === "mail") {
+        return res.status(400).json({ success: false, message: 'Bad request: el email para el campo username es inválido.' });
     }
-    //SINO PRUEBO ESTO!
+
     try {
         const result = await svc.registerUserAsync(nuevo_user);
         if (result) {
-            return res.status(200).send('Created. OK');
-        } 
+            return res.status(200).json({ success: true, message: 'Created. OK' });
+        } else {
+            return res.status(500).json({ success: false, message: 'Error interno: no se pudo registrar el usuario.' });
+        }
     } catch (error) {
-        return res.status(500).send('Error interno');
+        return res.status(500).json({ success: false, message: 'Error interno' });
     }
-})
+});
 
 export default router;
