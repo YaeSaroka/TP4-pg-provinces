@@ -9,9 +9,10 @@ let token;
 router.post('/login', async (req, res) => {
     try{
         const nuevo_user = req.body;
-        const result = await svc.loginUserAsync(nuevo_user);
+        var result = await svc.loginUserAsync(nuevo_user);
         token=result.token;
-        return res.status(200).json({ success: true, token: result.token });
+        console.log(nuevo_user);
+        return res.status(200).json({ success: true, token: result.token, result: result });
         
     } catch (error) {
         return res.status(401).json({ success: false, message: 'Usuario o contraseña inválidos' });

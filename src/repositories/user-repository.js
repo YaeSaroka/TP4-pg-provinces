@@ -19,6 +19,7 @@ export default class UserRepository {
         } catch (error) {
             console.log(error);
         }
+        console.log(returnArray)
         return returnArray;
     }
 

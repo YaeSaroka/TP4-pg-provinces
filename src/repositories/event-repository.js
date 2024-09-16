@@ -34,8 +34,9 @@ export default class EventRepository {
         index++;
       }
       if (params.startdate) {
-        sql += ` AND events.startdate = $${index}`;
+        sql += ` AND events.start_date = $${index}`;
         values.push(params.startdate);
+        typeof(params.startdate);
         index++;
       }
       if (params.tag) {

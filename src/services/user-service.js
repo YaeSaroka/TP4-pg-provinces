@@ -16,7 +16,7 @@ export default class UserService{
             username: returnArray.username 
         };
         const token= jwt.sign(payload, secretkey, options);
-        return {token}; //IMPORTANTE RETORNAR EL TOKEN!
+        return {token, payload}; //IMPORTANTE RETORNAR EL TOKEN!
     }
     registerUserAsync = async (nuevo_user) =>{
         const repo = new UserRepository();

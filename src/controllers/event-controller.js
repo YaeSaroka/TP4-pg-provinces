@@ -15,10 +15,9 @@ router.get('', async (req, res) => {
   console.log(params);
   const returnArray = await svc.BusquedaEventsAsync(params);
   if (returnArray != null && returnArray.length > 0) {
-    respuesta = res.status(200).json(returnArray);
-  } else respuesta = res.status(500).send(`Error interno.`);
+    return res.status(200).json(returnArray);
+  } else return res.status(401).json({ success: false, message: 'No se encontraron eventos' });
 
-  return respuesta;
 });
 router.post('', async (req, res) => {
   let token = req.headers.authorization.substring(7);
@@ -147,15 +146,14 @@ router.get('/:limit/:offset', async (req, res) => {
             nextPage: offset + limit < total ? offset + limit : null,
             total
         };
-        respuesta = res.status(200).json({
+        return res.status(200).json({
             collection: events.length > 0 ? events : null,
             pagination
         });
     } catch (error) {
         console.error(error);
-        respuesta = res.status(500).send(`Error interno.`);
+        return res.status(401).json({ success: false, message: 'No se encontraron eventos' });
     }
-    return respuesta;
 });
 
 export default router;
