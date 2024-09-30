@@ -21,7 +21,7 @@ router.get('', async (req, res) => {
 });
 router.post('', async (req, res) => {
   let token = req.headers.authorization.substring(7);
-  let payloadoriginal = await JwtHelper.desencriptarToken(token);
+  let payloadoriginal = JwtHelper.desencriptarToken(token);
   if (!payloadoriginal) {
     //payloadoriginal != null
     return res.status(401).send("Unauthorized. Usuario no autenticado");
