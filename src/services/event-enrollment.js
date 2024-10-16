@@ -13,9 +13,9 @@ export default class EventEnrollementService{
         const returnArray = await repo.patchEventRating(params, user_id, event_id);
         return returnArray;
     }
-    registerUserEventEnrollment= async (id_event, description, id_user) => {
+    registerUserEventEnrollment= async (id_event, description, id_user, attended) => {
         const repo = new EventEnrollmentRepository();
-        const returnArray = await repo.registerUserEventEnrollment(id_event, description, id_user);
+        const returnArray = await repo.registerUserEventEnrollment(id_event, description, id_user, attended);
         return returnArray;
     }
     deleteUserFromEventEnrollmentAsync = async (id_user, id_event) => {

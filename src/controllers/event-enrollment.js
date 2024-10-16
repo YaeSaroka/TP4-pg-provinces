@@ -76,6 +76,7 @@ router.post('/event/:id_user/enrollment', async(req, res)=> {
     req.user = payloadoriginal;
     const id_event = req.headers.id_event;
     const description= req.headers.description;
+    const attended= req.headers.attended;
     const id_user = parseInt(req.params.id_user);
     
     const verif_max_assistance = validacionesHelper.getEventMaxAssistance(id_event, "hola");
@@ -93,15 +94,15 @@ router.post('/event/:id_user/enrollment', async(req, res)=> {
       return res.status(400).send('Bad request: ya se encuentra registrado en este evento');
     
  
-    const result = await svc.registerUserEventEnrollment(id_event, description, id_user);
+    const result = await svc.registerUserEventEnrollment(id_event, description, id_user, attended);
     if (result && result.length > 0) 
-      return res.status(201).send('Created. OK');
+      return res.status(201).json({ success: true, message: 'Created. OK' });
     else 
-      return res.status(500).send('Error interno: la inserción no tuvo efecto');
+      return res.status(500).json({success: false, message:'Error interno: la inserción no tuvo efecto'});
     
 }catch (error) {
     console.error('Error interno:', error);
-    return res.status(500).send('Error interno');
+    return res.status(500).json({success: false, message:'Error interno'});
   }
 });
 

@@ -122,7 +122,7 @@ export default class EventEnrollmentRepository {
     }
     return returnArray;
 }
-  registerUserEventEnrollment = async (id_event, description, id_user) => {
+  registerUserEventEnrollment = async (id_event, description, id_user, attended) => {
     console.log(id_event);
     let returnArray = 0;
     const registration_date_time = new Date();
@@ -130,12 +130,13 @@ export default class EventEnrollmentRepository {
     try {
       await client.connect();
       const sql = `
-          INSERT INTO event_enrollments (id_event, description, id_user,registration_date_time) 
-          VALUES ($1, $2, $3, $4)
+          INSERT INTO event_enrollments (id_event, description, id_user,registration_date_time, attended) 
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING *`;
-      const result = await client.query(sql, [id_event, description, id_user, registration_date_time]);
+      const result = await client.query(sql, [id_event, description, id_user, registration_date_time, attended]);
       await client.end();
       returnArray = result.rows;
+      console.log(returnArray);
     } catch (error) {
       console.error('Error', error);
     }
