@@ -77,7 +77,7 @@ export default class EventRepository {
 
 
   updateEventAsync = async (evento_actualizado) => {
-    console.log(evento_actualizado);
+    console.log(evento_actualizado, " --> REPOSITORIO" );
     let returnArray = null;
     const { name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user, id } = evento_actualizado;
     const client = new Client(config);
@@ -88,9 +88,10 @@ export default class EventRepository {
         SET  name=$1, description=$2, id_event_category=$3, id_event_location=$4, start_date=$5, duration_in_minutes=$6, price=$7, enabled_for_enrollment=$8, max_assistance=$9, id_creator_user=$10
         WHERE id=$11
         RETURNING *`;
-      const result = await client.query(sql, [name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user, id]);
+      const result = await client.query(sql, [name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price ,enabled_for_enrollment, max_assistance , id_creator_user, id]);
       await client.end();
       returnArray = result.rows;
+      console.log(returnArray , " ---> result")
     } catch (error) {
       console.error('Error', error);
     }
@@ -98,7 +99,7 @@ export default class EventRepository {
   };
 
   deleteEventAsync = async (id) => {
-    console.log(id);
+    console.log(id, "  id repo");
     let returnArray = null;
     const client = new Client(config);
     try {

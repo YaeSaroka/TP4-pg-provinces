@@ -42,5 +42,25 @@ export default class UserRepository {
         }
         return returnArray;
     }
+    
+    findUserAsync = async (id) => {
+        let returnArray = null;
+        console.log(id, " -  repo ", typeof(id))
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+            SELECT first_name, last_name FROM users
+            WHERE id=$1
+            `;
+            const result = await client.query(sql,[id]);
+            await client.end();
+            returnArray = result.rows[0];
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(returnArray, " - returnarra")
+        return returnArray;
+    }
 }
 

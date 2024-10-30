@@ -23,5 +23,13 @@ export default class UserService{
         const returnArray = await repo.registerUserAsync(nuevo_user);
         return returnArray;
     }
+
+    findUser = async (id) =>{
+        console.log(id, " - id", typeof(id))
+        const repo = new UserRepository();
+        const returnArray = await repo.findUserAsync(id);
+        console.log(returnArray);
+        return returnArray;
+    }
 }
    

@@ -17,9 +17,9 @@ export default class EventService {
         const returnArray = await repo.updateEventAsync(evento_actualizado);
         return returnArray;
     }
-    deleteEventAsync = async () => {
+    deleteEventAsync = async (id) => {
         const repo = new EventRepository();
-        const returnArray = await repo.deleteEventAsync();
+        const returnArray = await repo.deleteEventAsync(id);
         return returnArray;
     }
 

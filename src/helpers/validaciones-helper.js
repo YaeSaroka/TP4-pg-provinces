@@ -140,7 +140,7 @@ class ValidacionesHelper {
     const repo = new HelperRepository();
     const total_usuarios_registrados_por_evento = await repo.countTotalUsersEventEnrollment(id_event);
     const max_assistance = await repo.getEventMaxAssistanceasync(id_event);
-    if (total_usuarios_registrados_por_evento >= max_assistance) {
+    if (Number(total_usuarios_registrados_por_evento) >= Number(max_assistance)) {
       return defaultvalue;
     } else {
       return id_event;

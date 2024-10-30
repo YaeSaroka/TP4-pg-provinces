@@ -45,4 +45,24 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.get('/find', async (req, res) => {
+    try{
+        var { id }  = req.body;
+        var respuesta;
+        console.log(id, " - id controller", typeof(id));
+        var returnArray = await svc.findUser(id);
+        if (returnArray != null) {
+            respuesta = res.status(200).json(returnArray);
+          } else {
+            respuesta = res.status(500).send(`Error interno.`);
+          }
+        
+    } catch (error) {
+        respuesta = res.status(401).json({ success: false, message: 'Usuario o contraseña inválidos' });
+    } 
+    return respuesta;
+})
+
+
+
 export default router;
