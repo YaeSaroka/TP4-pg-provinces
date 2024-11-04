@@ -26,16 +26,20 @@ router.get("", async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   let respuesta;
-  let id = req.params.id;
-  //SACAMOS CARACTERES PARA QUE QUEDE SOLO EL TOKEN
   let token = req.headers.authorization.substring(7);
-  //DESENCRIPTAMOS
-  let payloadoriginal = await JwtHelper.desencriptarToken(token);
-  console.log(payloadoriginal);
+  let payloadoriginal = JwtHelper.desencriptarToken(token);
+  if (!payloadoriginal) {
+    return res.status(401).json({ success: false, message: "Unauthorized. Usuario no autenticado"});
+  }
+  req.user = payloadoriginal;
+  const id = req.params.id;
+
   if (payloadoriginal != null) 
   {
     req.user = payloadoriginal;
+    console.log(id);
     const returnArray = await svc.getEventLocationByIdAsync(id);
+    console.log(returnArray);
 
     if (returnArray !== null && Array.isArray(returnArray) && returnArray.length > 0) //Array.isArray(returnArray) verifica que sea un array
     {
@@ -121,7 +125,6 @@ router.put('', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   let token = req.headers.authorization.substring(7);
   let payloadoriginal = await JwtHelper.desencriptarToken(token);
   if (payloadoriginal == false) {

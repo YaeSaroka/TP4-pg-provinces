@@ -20,21 +20,22 @@ export default class EventLocationRepository {
     }
     getEventLocationByIdAsync = async (id) => {
         let returnArray = null;
+        console.log(id, " - id repo loc")
         const client = new Client(config);
         try {
             await client.connect();
-            const sql = `SELECT * FROM event_locations
-            WHERE Id= ` + id;
-            const result = await client.query(sql);
+            const sql = 
+            `SELECT name FROM event_locations
+            WHERE id= $1`;
+            const result = await client.query(sql, [id]);
             await client.end();
             returnArray = result.rows;
-
+            console.log(returnArray);
         } catch (error) {
             console.log(error);
         }
         return returnArray;
     }
-
 
     createEventLocationAsync = async (event_location_nueva) => {
         console.log(event_location_nueva);
