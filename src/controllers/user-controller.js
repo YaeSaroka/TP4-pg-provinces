@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
 
 router.get('/find', async (req, res) => {
     try{
-        var { id }  = req.body;
+        var { id }  = req.query;
         var respuesta;
         console.log(id, " - id controller", typeof(id));
         var returnArray = await svc.findUser(id);
