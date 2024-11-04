@@ -99,7 +99,7 @@ router.delete("/:id", async (req, res) => {
   if (verif_gente_registrada_evento === "hola") {
     return res.status(400).json({ success: false, message:"Bad request: Existe al menos un usuario registrado al evento."});
   } 
-  else if (verif_gente_registrada_evento != "hola") 
+  else if (verif_gente_registrada_evento !== "hola") 
   {
     var respuesta = res.status(200).json({ success: true, message:"Deleted. OK"});
   } else return res.status(404).json({ success: false, message:"Not found"});
